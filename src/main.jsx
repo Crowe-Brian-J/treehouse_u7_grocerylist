@@ -1,6 +1,13 @@
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 
+const items = [
+  { name: 'Apples', quantityAmount: 5, id: 1 },
+  { name: 'Bananas', quantityAmount: 7, id: 2 },
+  { name: 'Box of Pasta', quantityAmount: 1, id: 3 },
+  { name: 'Cookies', quantityAmount: 12, id: 4 }
+]
+
 const Header = (props) => {
   return (
     <header>
@@ -31,16 +38,20 @@ const Counter = (props) => {
   )
 }
 
-const App = () => {
+const App = (props) => {
   return (
     <div className="grocery-list">
-      <Header title="Grocery List" itemTotal={1} />
-
+      <Header title="Grocery List" itemTotal={props.initialList.length} />
       {/* Grocery List */}
-      <Item itemName="Apples" quantityAmount={5} />
-      <Item itemName="Bananas" quantityAmount={7} />
-      <Item itemName="Box of Pasta" quantityAmount={1} />
-      <Item itemName="Cookies" quantityAmount={12} />
+      {props.initialList.map((item) => {
+        return (
+          <Item
+            itemName={item.name}
+            quantityAmount={item.quantityAmount}
+            key={item.id}
+          />
+        )
+      })}
     </div>
   )
 }
@@ -48,6 +59,6 @@ const App = () => {
 const root = createRoot(document.getElementById('root'))
 root.render(
   <StrictMode>
-    <App />
+    <App initialList={items} />
   </StrictMode>
 )
