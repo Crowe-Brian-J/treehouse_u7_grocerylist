@@ -1,31 +1,32 @@
+import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 
-const Header = () => {
+const Header = (props) => {
   return (
     <header>
-      <h1>Grocery List</h1>
-      <span className="total-items">Items: 1</span>
+      <h1>{props.title}</h1>
+      <span className="total-items">Items: {props.itemTotal}</span>
     </header>
   )
 }
 
-const Item = () => {
+const Item = (props) => {
   return (
     <div className="item">
       <button className="remove-item" />
-      <span className="item-name">Apples</span>
-      <Counter />
+      <span className="item-name">{props.itemName}</span>
+      <Counter quantityAmount={props.quantityAmount} />
     </div>
   )
 }
 
-const Counter = () => {
+const Counter = (props) => {
   return (
     <div className="quantity">
       <span className="qty-label">QTY</span>
       <button className="increment">+</button>
       <button className="decrement">-</button>
-      <span className="quantity-amount">15</span>
+      <span className="quantity-amount">{props.quantityAmount}</span>
     </div>
   )
 }
@@ -33,13 +34,20 @@ const Counter = () => {
 const App = () => {
   return (
     <div className="grocery-list">
-      <Header />
+      <Header title="Grocery List" itemTotal={1} />
 
       {/* Grocery List */}
-      <Item />
+      <Item itemName="Apples" quantityAmount={5} />
+      <Item itemName="Bananas" quantityAmount={7} />
+      <Item itemName="Box of Pasta" quantityAmount={1} />
+      <Item itemName="Cookies" quantityAmount={12} />
     </div>
   )
 }
 
 const root = createRoot(document.getElementById('root'))
-root.render(<App />)
+root.render(
+  <StrictMode>
+    <App />
+  </StrictMode>
+)
