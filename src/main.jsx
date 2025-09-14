@@ -1,13 +1,6 @@
 import { StrictMode, useState } from 'react'
 import { createRoot } from 'react-dom/client'
 
-const items = [
-  { name: 'Apples', quantityAmount: 5, id: 1 },
-  { name: 'Bananas', quantityAmount: 7, id: 2 },
-  { name: 'Box of Pasta', quantityAmount: 1, id: 3 },
-  { name: 'Cookies', quantityAmount: 12, id: 4 }
-]
-
 const Header = (props) => {
   return (
     <header>
@@ -20,7 +13,10 @@ const Header = (props) => {
 const Item = (props) => {
   return (
     <div className="item">
-      <button className="remove-item" />
+      <button
+        className="remove-item"
+        onClick={() => props.removeItem(props.id)}
+      />
       <span className="item-name">{props.itemName}</span>
       <Counter />
     </div>
@@ -56,13 +52,32 @@ const Counter = () => {
   )
 }
 
-const App = (props) => {
+const App = () => {
+  const [items, setItems] = useState([
+    { name: 'Apples', id: 1 },
+    { name: 'Bananas', id: 2 },
+    { name: 'Box of Pasta', id: 3 },
+    { name: 'Cookies', id: 4 }
+  ])
+
+  // delete item
+  const handleRemoveItem = (id) => {
+    setItems((prevItems) => prevItems.filter((i) => i.id !== id))
+  }
+
   return (
     <div className="grocery-list">
-      <Header title="Grocery List" itemTotal={props.initialList.length} />
+      <Header title="Grocery List" itemTotal={items.length} />
       {/* Grocery List */}
-      {props.initialList.map((item) => {
-        return <Item itemName={item.name} key={item.id} />
+      {items.map((item) => {
+        return (
+          <Item
+            itemName={item.name}
+            id={item.id}
+            key={item.id}
+            removeItem={handleRemoveItem}
+          />
+        )
       })}
     </div>
   )
@@ -71,6 +86,6 @@ const App = (props) => {
 const root = createRoot(document.getElementById('root'))
 root.render(
   <StrictMode>
-    <App initialList={items} />
+    <App />
   </StrictMode>
 )
