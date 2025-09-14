@@ -1,4 +1,4 @@
-import { StrictMode } from 'react'
+import { StrictMode, useState } from 'react'
 import { createRoot } from 'react-dom/client'
 
 const items = [
@@ -22,18 +22,35 @@ const Item = (props) => {
     <div className="item">
       <button className="remove-item" />
       <span className="item-name">{props.itemName}</span>
-      <Counter quantityAmount={props.quantityAmount} />
+      <Counter />
     </div>
   )
 }
 
-const Counter = (props) => {
+const Counter = () => {
+  const [quantityAmount, setQuantityAmount] = useState(0)
+
+  // event handlers
+  const incrementQuantity = () => {
+    setQuantityAmount(quantityAmount + 1)
+  }
+
+  const decrementQuantity = () => {
+    if (quantityAmount > 0) {
+      setQuantityAmount(quantityAmount - 1)
+    }
+  }
+
   return (
     <div className="quantity">
       <span className="qty-label">QTY</span>
-      <button className="increment">+</button>
-      <button className="decrement">-</button>
-      <span className="quantity-amount">{props.quantityAmount}</span>
+      <button className="increment" onClick={incrementQuantity}>
+        +
+      </button>
+      <button className="decrement" onClick={decrementQuantity}>
+        -
+      </button>
+      <span className="quantity-amount">{quantityAmount}</span>
     </div>
   )
 }
@@ -44,13 +61,7 @@ const App = (props) => {
       <Header title="Grocery List" itemTotal={props.initialList.length} />
       {/* Grocery List */}
       {props.initialList.map((item) => {
-        return (
-          <Item
-            itemName={item.name}
-            quantityAmount={item.quantityAmount}
-            key={item.id}
-          />
-        )
+        return <Item itemName={item.name} key={item.id} />
       })}
     </div>
   )
