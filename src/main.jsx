@@ -32,12 +32,13 @@ const Counter = () => {
 
   // event handlers
   const incrementQuantity = () => {
-    setQuantityAmount(quantityAmount + 1)
+    // use updater function to ensure reliability
+    setQuantityAmount((q) => q + 1)
   }
 
   const decrementQuantity = () => {
     if (quantityAmount > 0) {
-      setQuantityAmount(quantityAmount - 1)
+      setQuantityAmount((q) => q - 1)
     }
   }
 
